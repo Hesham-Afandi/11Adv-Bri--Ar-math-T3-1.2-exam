@@ -1,15 +1,15 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📐 رياضيات 11 متقدم - الرسوم القطبية وأشكالها (1.2)</title>
+    <title>📐 Grade 11 Advanced Inspire - Polar Graphs & Curves (1.2)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Cairo', sans-serif; }
+        body.en-mode { font-family: 'Inter', sans-serif; }
         .correct { background-color: #dcfce7 !important; border-color: #16a34a !important; }
         .incorrect { background-color: #fee2e2 !important; border-color: #dc2626 !important; }
         .formula { font-family: 'Times New Roman', serif; font-style: italic; direction: ltr; display: inline-block; }
@@ -21,412 +21,568 @@
         .grade-good { background: #fef3c7; color: #92400e; }
         .grade-pass { background: #dbeafe; color: #1e40af; }
         .grade-fail { background: #fee2e2; color: #991b1b; }
+        
+        /* Language Switcher */
+        .lang-switch {
+            position: fixed; top: 16px; left: 16px; z-index: 100;
+            background: white; padding: 6px; border-radius: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15); display: flex; gap: 4px;
+            border: 2px solid #0d9488;
+        }
+        [dir="ltr"] .lang-switch { left: auto; right: 16px; }
+        .lang-btn {
+            padding: 6px 14px; border-radius: 20px; cursor: pointer; font-weight: bold;
+            transition: all 0.3s; border: none; font-size: 0.875rem;
+            background: transparent; color: #6b7280;
+        }
+        .lang-btn.active { background: #0d9488; color: white; box-shadow: 0 2px 6px rgba(13,148,136,0.4); }
+        .lang-btn:hover:not(.active) { background: #f0fdfa; color: #0d9488; }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800 p-4 md:p-8 min-h-screen">
 
+    <!-- Language Switcher -->
+    <div class="lang-switch no-print">
+        <button class="lang-btn active" onclick="setLanguage('ar')" id="btn-ar">عربي</button>
+        <button class="lang-btn" onclick="setLanguage('en')" id="btn-en">EN</button>
+    </div>
+
     <!-- Timer -->
     <div id="timer-container" class="max-w-4xl mx-auto mb-4 text-center no-print">
         <div class="bg-white p-4 rounded-xl shadow-md inline-block border-2 border-teal-100">
-            <span class="text-gray-600 ml-2">⏱️ الوقت المتبقي:</span>
+            <span class="text-gray-600 ml-2" data-ar="⏱️ الوقت المتبقي:" data-en="⏱️ Time Remaining:">⏱️ الوقت المتبقي:</span>
             <span id="timer" class="text-2xl font-bold text-teal-600 font-mono">45:00</span>
         </div>
     </div>
 
     <!-- Controls -->
     <div class="max-w-4xl mx-auto mb-6 flex flex-wrap gap-3 justify-center no-print">
-        <button onclick="toggleAnswers()" class="bg-teal-600 hover:bg-teal-700 text-white px-5 py-2 rounded-lg font-medium transition shadow cursor-pointer">
-            👁️ إظهار / إخفاء الإجابات
-        </button>
-        <button onclick="window.print()" class="bg-gray-800 hover:bg-gray-900 text-white px-5 py-2 rounded-lg font-medium transition shadow cursor-pointer">
-            🖨️ طباعة / PDF
-        </button>
+        <button onclick="toggleAnswers()" class="bg-teal-600 hover:bg-teal-700 text-white px-5 py-2 rounded-lg font-medium transition shadow cursor-pointer" data-ar="👁️ إظهار / إخفاء الإجابات" data-en="👁️ Show / Hide Answers">👁️ إظهار / إخفاء الإجابات</button>
+        <button onclick="window.print()" class="bg-gray-800 hover:bg-gray-900 text-white px-5 py-2 rounded-lg font-medium transition shadow cursor-pointer" data-ar="🖨️ طباعة / PDF" data-en="🖨️ Print / PDF">🖨️ طباعة / PDF</button>
     </div>
 
     <!-- Header -->
     <header class="max-w-4xl mx-auto bg-white p-6 rounded-xl shadow-md mb-8 border-r-4 border-teal-600">
         <div class="text-center">
-            <h1 class="text-2xl md:text-3xl font-bold text-gray-900 mb-2">📐 رياضيات الصف الحادب عشر متقدم</h1>
-            <h2 class="text-lg text-teal-600 font-semibold">الرسوم القطبية وأشكالها (Polar Graphs & Curves)</h2>
-            <p class="text-sm text-gray-600 mt-2">Circles, Symmetry Tests, Limacons, Roses, Lemniscates & Spirals</p>
+            <h1 class="text-2xl md:text-3xl font-bold text-gray-900 mb-2" data-ar="📐 رياضيات الصف الحادي عشر متقدم - Inspire" data-en="📐 Grade 11 Advanced Mathematics - Inspire">📐 رياضيات الصف الحادي عشر متقدم - Inspire</h1>
+            <h2 class="text-lg text-teal-600 font-semibold" data-ar="الدرس 1.2: الرسوم القطبية وأشكالها" data-en="Lesson 1.2: Polar Graphs & Curves">الدرس 1.2: الرسوم القطبية وأشكالها</h2>
+            <p class="text-sm text-gray-600 mt-2" data-ar="الدوائر، اختبار التماثل، الليماكون، الورود، الليمنسكيت، واللوالب" data-en="Circles, Symmetry Tests, Limacons, Roses, Lemniscates & Spirals">الدوائر، اختبار التماثل، الليماكون، الورود، الليمنسكيت، واللوالب</p>
         </div>
         <div class="mt-4 flex flex-wrap justify-center gap-4 text-sm text-gray-600">
-            <span>📅 التاريخ: <input type="text" class="border-b border-gray-400 bg-transparent w-28 text-center"></span>
-            <span>👤 الاسم: <input type="text" id="studentName" class="border-b border-gray-400 bg-transparent w-32 text-center" placeholder="أدخل الاسم"></span>
-            <span>🏫 الشعبة: <input type="text" id="studentClass" class="border-b border-gray-400 bg-transparent w-28 text-center" placeholder="الفصل"></span>
-            <span>⏱️ المدة: 45 دقيقة</span>
-            <span>📊 المجموع: 100 درجة</span>
+            <span><span data-ar="📅 التاريخ:" data-en="📅 Date:">📅 التاريخ:</span> <input type="text" class="border-b border-gray-400 bg-transparent w-28 text-center"></span>
+            <span><span data-ar="👤 الاسم:" data-en="👤 Name:">👤 الاسم:</span> <input type="text" id="studentName" class="border-b border-gray-400 bg-transparent w-32 text-center" placeholder="Enter name"></span>
+            <span><span data-ar="🏫 الشعبة:" data-en="🏫 Class:">🏫 الشعبة:</span> <input type="text" id="studentClass" class="border-b border-gray-400 bg-transparent w-28 text-center" placeholder="Class"></span>
+            <span><span data-ar="⏱️ المدة: 45 دقيقة" data-en="⏱️ Duration: 45 min">⏱️ المدة: 45 دقيقة</span></span>
+            <span><span data-ar="📊 المجموع: 100 درجة" data-en="📊 Total: 100 pts">📊 المجموع: 100 درجة</span></span>
         </div>
     </header>
 
-    <main class="max-w-4xl mx-auto space-y-8">
-
-        <!-- Section 1: Circles in Polar Coordinates -->
-        <section class="bg-white p-6 rounded-xl shadow-lg">
-            <h2 class="text-xl font-bold mb-4 text-teal-700">🔹 الجزء الأول: الدوائر في الإحداثيات القطبية</h2>
-            <ol id="section1-list" class="space-y-4 text-sm">
-                <li class="border-r-4 border-teal-500 pr-4 py-2" id="q-1">
-                    <strong>1.</strong> المعادلة <span class="formula">r = a cos θ</span> تمثل دائرة مركزها بالإحداثيات القطبية:<br>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q1" value="a" class="ml-2"> أ) <span class="formula">(a, 0)</span></label>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q1" value="b" class="ml-2"> ب) <span class="formula">(a/2, 0)</span></label>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q1" value="c" class="ml-2"> ج) <span class="formula">(a/2, π/2)</span></label>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q1" value="d" class="ml-2"> د) <span class="formula">(a, π/2)</span></label>
-                    <div class="answer-box text-green-700 mt-2 font-medium hidden">✅ الإجابة: ب) المركز عند (a/2, 0) وقطرها |a|</div>
-                </li>
-                <li class="border-r-4 border-teal-500 pr-4 py-2" id="q-2">
-                    <strong>2.</strong> المعادلة <span class="formula">r = a sin θ</span> تمثل دائرة تقع:<br>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q2" value="a" class="ml-2"> أ) محاذية للمحور الأفقي</label>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q2" value="b" class="ml-2"> ب) محاذية للمحور الرأسي</label>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q2" value="c" class="ml-2"> ج) مركزها نقطة الأصل</label>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q2" value="d" class="ml-2"> د) لا تمر بنقطة الأصل</label>
-                    <div class="answer-box text-green-700 mt-2 font-medium hidden">✅ الإجابة: ب) معادلات sin تكون محاذية للمحور الرأسي ومركزها (a/2, π/2)</div>
-                </li>
-                <li class="border-r-4 border-teal-500 pr-4 py-2" id="q-3">
-                    <strong>3.</strong> قطر الدائرة الممثلة بالمعادلة <span class="formula">r = 6 cos θ</span> يساوي:<br>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q3" value="a" class="ml-2"> أ) 3</label>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q3" value="b" class="ml-2"> ب) 6</label>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q3" value="c" class="ml-2"> ج) 12</label>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q3" value="d" class="ml-2"> د) 2</label>
-                    <div class="answer-box text-green-700 mt-2 font-medium hidden">✅ الإجابة: ب) القطر = |a| = 6</div>
-                </li>
-                <li class="border-r-4 border-teal-500 pr-4 py-2" id="q-4">
-                    <strong>4.</strong> جميع الدوائر من الشكل <span class="formula">r = a cos θ</span> أو <span class="formula">r = a sin θ</span> تشترك في أنها:<br>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q4" value="a" class="ml-2"> أ) لا تمر بالقطب</label>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q4" value="b" class="ml-2"> ب) تمر بنقطة الأصل (القطب)</label>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q4" value="c" class="ml-2"> ج) مركزها دائماً (0,0)</label>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q4" value="d" class="ml-2"> د) نصف قطرها ثابت بغض النظر عن a</label>
-                    <div class="answer-box text-green-700 mt-2 font-medium hidden">✅ الإجابة: ب) عندما θ = π/2 لـ cos أو θ = 0 لـ sin تكون r = 0</div>
-                </li>
-            </ol>
-        </section>
-
-        <!-- Section 2: Symmetry Tests -->
-        <section class="bg-white p-6 rounded-xl shadow-lg">
-            <h2 class="text-xl font-bold mb-4 text-teal-700">🔹 الجزء الثاني: اختبار التماثل</h2>
-            <ol id="section2-list" class="space-y-4 text-sm">
-                <li class="border-r-4 border-teal-500 pr-4 py-2" id="q-5">
-                    <strong>5.</strong> لاختبار التماثل حول المحور القطبي (محور x)، نستبدل:<br>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q5" value="a" class="ml-2"> أ) <span class="formula">θ</span> بـ <span class="formula">π - θ</span></label>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q5" value="b" class="ml-2"> ب) <span class="formula">r</span> بـ <span class="formula">-r</span></label>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q5" value="c" class="ml-2"> ج) <span class="formula">θ</span> بـ <span class="formula">-θ</span></label>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q5" value="d" class="ml-2"> د) <span class="formula">θ</span> بـ <span class="formula">θ + π</span></label>
-                    <div class="answer-box text-green-700 mt-2 font-medium hidden">✅ الإجابة: ج) استبدال θ بـ -θ يختبر التماثل حول المحور القطبي</div>
-                </li>
-                <li class="border-r-4 border-teal-500 pr-4 py-2" id="q-6">
-                    <strong>6.</strong> لاختبار التماثل حول الخط <span class="formula">θ = π/2</span> (محور y)، نستبدل:<br>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q6" value="a" class="ml-2"> أ) <span class="formula">θ</span> بـ <span class="formula">-θ</span></label>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q6" value="b" class="ml-2"> ب) <span class="formula">θ</span> بـ <span class="formula">π - θ</span> أو <span class="formula">r</span> بـ <span class="formula">-r</span></label>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q6" value="c" class="ml-2"> ج) <span class="formula">r</span> بـ <span class="formula">-r</span> فقط</label>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q6" value="d" class="ml-2"> د) <span class="formula">θ</span> بـ <span class="formula">θ + π</span></label>
-                    <div class="answer-box text-green-700 mt-2 font-medium hidden">✅ الإجابة: ب) استبدال θ بـ π-θ أو r بـ -r يختبر التماثل حول المحور الرأسي</div>
-                </li>
-                <li class="border-r-4 border-teal-500 pr-4 py-2" id="q-7">
-                    <strong>7.</strong> لاختبار التماثل حول القطب (نقطة الأصل)، نستبدل:<br>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q7" value="a" class="ml-2"> أ) <span class="formula">θ</span> بـ <span class="formula">-θ</span></label>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q7" value="b" class="ml-2"> ب) <span class="formula">θ</span> بـ <span class="formula">π - θ</span></label>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q7" value="c" class="ml-2"> ج) <span class="formula">r</span> بـ <span class="formula">-r</span> أو <span class="formula">θ</span> بـ <span class="formula">θ + π</span></label>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q7" value="d" class="ml-2"> د) <span class="formula">r</span> بـ <span class="formula">r²</span></label>
-                    <div class="answer-box text-green-700 mt-2 font-medium hidden">✅ الإجابة: ج) استبدال r بـ -r أو θ بـ θ+π يختبر التماثل حول القطب</div>
-                </li>
-                <li class="border-r-4 border-teal-500 pr-4 py-2" id="q-8">
-                    <strong>8.</strong> إذا لم تتحقق أي من اختبارات التماثل الثلاثة، فهذا يعني:<br>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q8" value="a" class="ml-2"> أ) المنحنى ليس له تماثل بالتأكيد</label>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q8" value="b" class="ml-2"> ب) المنحنى قد يكون متماثلاً لكن الاختبارات غير كافية لإثبات ذلك</label>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q8" value="c" class="ml-2"> ج) المعادلة خاطئة</label>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q8" value="d" class="ml-2"> د) يجب استخدام الآلة الحاسبة فقط</label>
-                    <div class="answer-box text-green-700 mt-2 font-medium hidden">✅ الإجابة: ب) اختبارات التماثل هي شروط كافية وليست ضرورية</div>
-                </li>
-            </ol>
-        </section>
-
-        <!-- Section 3: Famous Polar Curves -->
-        <section class="bg-white p-6 rounded-xl shadow-lg">
-            <h2 class="text-xl font-bold mb-4 text-teal-700">🔹 الجزء الثالث: المنحنيات القطبية الشهيرة</h2>
-            <ol id="section3-list" class="space-y-4 text-sm">
-                <li class="border-r-4 border-teal-500 pr-4 py-2" id="q-9">
-                    <strong>9.</strong> المعادلة <span class="formula">r = a ± a cos θ</span> (حيث a = b) تمثل شكلاً يُسمى:<br>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q9" value="a" class="ml-2"> أ) ليماكون ذو حلقة داخلية</label>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q9" value="b" class="ml-2"> ب) ليماكون محدب</label>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q9" value="c" class="ml-2"> ج) كارديويد (شكل القلب)</label>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q9" value="d" class="ml-2"> د) وردة</label>
-                    <div class="answer-box text-green-700 mt-2 font-medium hidden">✅ الإجابة: ج) عندما |a| = |b| يكون الشكل قلبياً (Cardioid)</div>
-                </li>
-                <li class="border-r-4 border-teal-500 pr-4 py-2" id="q-10">
-                    <strong>10.</strong> عدد بتلات منحنى الوردة <span class="formula">r = a cos(nθ)</span> عندما يكون n زوجياً هو:<br>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q10" value="a" class="ml-2"> أ) n</label>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q10" value="b" class="ml-2"> ب) 2n</label>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q10" value="c" class="ml-2"> ج) n/2</label>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q10" value="d" class="ml-2"> د) n²</label>
-                    <div class="answer-box text-green-700 mt-2 font-medium hidden">✅ الإجابة: ب) إذا كان n زوجياً فعدد البتلات = 2n</div>
-                </li>
-                <li class="border-r-4 border-teal-500 pr-4 py-2" id="q-11">
-                    <strong>11.</strong> المعادلة <span class="formula">r² = a² cos(2θ)</span> تمثل شكلاً يُسمى:<br>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q11" value="a" class="ml-2"> أ) كارديويد</label>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q11" value="b" class="ml-2"> ب) لولب أرخميدس</label>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q11" value="c" class="ml-2"> ج) ليمنسكيت (شكل اللانهاية ∞)</label>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q11" value="d" class="ml-2"> د) وردة بثلاث بتلات</label>
-                    <div class="answer-box text-green-700 mt-2 font-medium hidden">✅ الإجابة: ج) وجود r² مع cos(2θ) أو sin(2θ) يعطي شكل الـ 8</div>
-                </li>
-                <li class="border-r-4 border-teal-500 pr-4 py-2" id="q-12">
-                    <strong>12.</strong> منحنى الوردة <span class="formula">r = 3 cos(4θ)</span> يحتوي على عدد بتلات يساوي:<br>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q12" value="a" class="ml-2"> أ) 4</label>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q12" value="b" class="ml-2"> ب) 3</label>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q12" value="c" class="ml-2"> ج) 8</label>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q12" value="d" class="ml-2"> د) 12</label>
-                    <div class="answer-box text-green-700 mt-2 font-medium hidden">✅ الإجابة: ج) n = 4 (زوجي) → عدد البتلات = 2×4 = 8</div>
-                </li>
-            </ol>
-        </section>
-
-        <!-- Section 4: Drawing Steps & SAT Tips -->
-        <section class="bg-white p-6 rounded-xl shadow-lg">
-            <h2 class="text-xl font-bold mb-4 text-teal-700">🔹 الجزء الرابع: خطوات الرسم ونصائح SAT/ACT</h2>
-            <ol id="section4-list" class="space-y-4 text-sm">
-                <li class="border-r-4 border-teal-500 pr-4 py-2" id="q-13">
-                    <strong>13.</strong> عند رسم منحنى قطبي يدوياً باستخدام جدول قيم، الزوايا التي تكون فيها <span class="formula">r = 0</span> مهمة لأن:<br>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q13" value="a" class="ml-2"> أ) المنحنى يتوقف عندها</label>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q13" value="b" class="ml-2"> ب) المنحنى يمر بنقطة الأصل (القطب) عندها</label>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q13" value="c" class="ml-2"> ج) لا يمكن الرسم عندها</label>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q13" value="d" class="ml-2"> د) تمثل أقصى قيمة للمنحنى</label>
-                    <div class="answer-box text-green-700 mt-2 font-medium hidden">✅ الإجابة: ب) r = 0 تعني أن النقطة تقع عند القطب</div>
-                </li>
-                <li class="border-r-4 border-teal-500 pr-4 py-2" id="q-14">
-                    <strong>14.</strong> لتوفير الوقت عند الرسم اليدوي، يجب:<br>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q14" value="a" class="ml-2"> أ) حساب جميع النقاط من 0 إلى 2π</label>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q14" value="b" class="ml-2"> ب) استخدام اختبار التماثل لرسم نصف المنحنى ثم عكسه</label>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q14" value="c" class="ml-2"> ج) الاعتماد على التخمين</label>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q14" value="d" class="ml-2"> د) استخدام الآلة الحاسبة فقط</label>
-                    <div class="answer-box text-green-700 mt-2 font-medium hidden">✅ الإجابة: ب) التماثل يقلل العمل إلى النصف أو الربع</div>
-                </li>
-                <li class="border-r-4 border-teal-500 pr-4 py-2" id="q-15">
-                    <strong>15.</strong> في أسئلة SAT/ACT، إذا رأيت <span class="formula">r²</span> في المعادلة، فالشكل المتوقع فوراً هو:<br>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q15" value="a" class="ml-2"> أ) دائرة</label>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q15" value="b" class="ml-2"> ب) كارديويد</label>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q15" value="c" class="ml-2"> ج) ليمنسكيت (شكل الـ 8)</label>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q15" value="d" class="ml-2"> د) لولب</label>
-                    <div class="answer-box text-green-700 mt-2 font-medium hidden">✅ الإجابة: ج) r² هو المؤشر المباشر لليمنسكيت</div>
-                </li>
-                <li class="border-r-4 border-teal-500 pr-4 py-2" id="q-16">
-                    <strong>16.</strong> الفرق الرئيسي بين معادلات <span class="formula">cos θ</span> و <span class="formula">sin θ</span> في الرسوم القطبية هو:<br>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q16" value="a" class="ml-2"> أ) لا يوجد فرق</label>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q16" value="b" class="ml-2"> ب) cos محاذية للأفقي و sin محاذية للرأسي</label>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q16" value="c" class="ml-2"> ج) cos محاذية للرأسي و sin محاذية للأفقي</label>
-                    <label class="mr-4 cursor-pointer block mt-1"><input type="radio" name="q16" value="d" class="ml-2"> د) يعتمد على قيمة الثابت a فقط</label>
-                    <div class="answer-box text-green-700 mt-2 font-medium hidden">✅ الإجابة: ب) cos ↔ محور أفقي، sin ↔ محور رأسي</div>
-                </li>
-            </ol>
-        </section>
-
-        <!-- Submit Button -->
-        <div class="text-center no-print pb-8">
-            <button onclick="gradeExam()" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white text-lg px-10 py-4 rounded-xl font-bold shadow-xl transition transform hover:scale-105 cursor-pointer">
-                📝 تسليم وتصحيح الامتحان
-            </button>
-        </div>
+    <main class="max-w-4xl mx-auto space-y-8" id="exam-content">
+        <!-- Questions rendered by JS -->
     </main>
+
+    <!-- Submit Button -->
+    <div class="text-center no-print pb-8 mt-8">
+        <button onclick="gradeExam()" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white text-lg px-10 py-4 rounded-xl font-bold shadow-xl transition transform hover:scale-105 cursor-pointer" data-ar="📝 تسليم وتصحيح الامتحان" data-en="📝 Submit & Grade Exam">📝 تسليم وتصحيح الامتحان</button>
+    </div>
 
     <!-- Results Panel -->
     <div id="results-panel" class="max-w-4xl mx-auto mt-8 bg-white p-8 rounded-2xl shadow-2xl border-t-4 border-emerald-500 hidden no-print">
-        <h2 class="text-3xl font-bold text-gray-900 mb-6 text-center">📊 نتائج الامتحان</h2>
+        <h2 class="text-3xl font-bold text-gray-900 mb-6 text-center" data-ar="📊 نتائج الامتحان" data-en="📊 Exam Results">📊 نتائج الامتحان</h2>
         <div class="grid md:grid-cols-3 gap-4 mb-6">
-            <div class="bg-blue-50 p-4 rounded-xl text-center"><p>اسم الطالب</p><p id="res-name" class="font-bold text-xl text-teal-700">-</p></div>
-            <div class="bg-purple-50 p-4 rounded-xl text-center"><p>التاريخ</p><p id="res-date" class="font-bold text-xl text-purple-700">-</p></div>
-            <div class="bg-emerald-50 p-4 rounded-xl text-center"><p>المجموع</p><p id="res-total" class="font-bold text-3xl text-emerald-600">0 / 100</p></div>
+            <div class="bg-blue-50 p-4 rounded-xl text-center"><p data-ar="اسم الطالب" data-en="Student Name">اسم الطالب</p><p id="res-name" class="font-bold text-xl text-teal-700">-</p></div>
+            <div class="bg-purple-50 p-4 rounded-xl text-center"><p data-ar="التاريخ" data-en="Date">التاريخ</p><p id="res-date" class="font-bold text-xl text-purple-700">-</p></div>
+            <div class="bg-emerald-50 p-4 rounded-xl text-center"><p data-ar="المجموع" data-en="Score">المجموع</p><p id="res-total" class="font-bold text-3xl text-emerald-600">0 / 100</p></div>
         </div>
 
         <div class="text-center mb-6">
-            <span id="success-badge" class="success-badge grade-excellent">ممتاز - 100%</span>
+            <span id="success-badge" class="success-badge grade-excellent">-</span>
             <p id="success-percent" class="text-4xl font-bold text-emerald-600 mt-2">100%</p>
-            <p class="text-sm text-gray-500">نسبة النجاح</p>
+            <p class="text-sm text-gray-500" data-ar="نسبة النجاح" data-en="Success Rate">نسبة النجاح</p>
         </div>
 
         <div class="bg-gray-50 p-6 rounded-xl mb-6">
-            <h3 class="font-bold text-lg mb-4 text-gray-800">📈 تفصيل الأداء حسب القسم:</h3>
+            <h3 class="font-bold text-lg mb-4 text-gray-800" data-ar="📈 تفصيل الأداء حسب القسم:" data-en="📈 Performance Breakdown:">📈 تفصيل الأداء حسب القسم:</h3>
             <div class="space-y-3">
                 <div class="flex justify-between items-center">
-                    <span class="text-gray-700">الدوائر في الإحداثيات القطبية</span>
+                    <span class="text-gray-700" data-ar="الدوائر في الإحداثيات القطبية" data-en="Circles in Polar Coordinates">الدوائر في الإحداثيات القطبية</span>
                     <span id="sec1-score" class="font-bold text-teal-600">0/4</span>
                 </div>
                 <div class="flex justify-between items-center">
-                    <span class="text-gray-700">اختبار التماثل</span>
+                    <span class="text-gray-700" data-ar="اختبار التماثل" data-en="Symmetry Tests">اختبار التماثل</span>
                     <span id="sec2-score" class="font-bold text-teal-600">0/4</span>
                 </div>
                 <div class="flex justify-between items-center">
-                    <span class="text-gray-700">المنحنيات القطبية الشهيرة</span>
+                    <span class="text-gray-700" data-ar="المنحنيات القطبية الشهيرة" data-en="Famous Polar Curves">المنحنيات القطبية الشهيرة</span>
                     <span id="sec3-score" class="font-bold text-teal-600">0/4</span>
                 </div>
                 <div class="flex justify-between items-center">
-                    <span class="text-gray-700">خطوات الرسم ونصائح SAT</span>
+                    <span class="text-gray-700" data-ar="خطوات الرسم ونصائح SAT" data-en="Drawing Steps & SAT Tips">خطوات الرسم ونصائح SAT</span>
                     <span id="sec4-score" class="font-bold text-teal-600">0/4</span>
                 </div>
             </div>
         </div>
 
         <div class="text-center mb-6">
-            <button id="sendEmailBtn" onclick="sendResultsToEmail()" class="bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 text-white text-lg px-8 py-3 rounded-xl font-bold shadow-xl transition transform hover:scale-105 cursor-pointer">
-                📧 إرسال النتائج للمعلم
-            </button>
+            <button id="sendEmailBtn" onclick="sendResultsToEmail()" class="bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 text-white text-lg px-8 py-3 rounded-xl font-bold shadow-xl transition transform hover:scale-105 cursor-pointer" data-ar="📧 إرسال النتائج للمعلم" data-en="📧 Send Results to Teacher">📧 إرسال النتائج للمعلم</button>
             <p id="emailStatus" class="text-sm mt-2 text-center font-medium"></p>
         </div>
 
         <div class="flex gap-3 justify-center">
-            <button onclick="window.print()" class="bg-gray-700 text-white px-6 py-3 rounded-lg font-semibold">🖨️ طباعة النتائج</button>
+            <button onclick="window.print()" class="bg-gray-700 text-white px-6 py-3 rounded-lg font-semibold" data-ar="🖨️ طباعة النتائج" data-en="🖨️ Print Results">🖨️ طباعة النتائج</button>
         </div>
     </div>
 
     <footer class="max-w-4xl mx-auto mt-10 mb-8 text-center text-gray-500 text-sm no-print">
-        © الرياضيات للصف الحادي عشر متقدم | الرسوم القطبية وأشكالها (8.2) | Mr. Mohammed Hesham
+        © <span data-ar="الرياضيات للصف الحادي عشر متقدم - Inspire | الدرس 1.2: الرسوم القطبية وأشكالها" data-en="Grade 11 Advanced Math - Inspire | Lesson 1.2: Polar Graphs & Curves">الرياضيات للصف الحادي عشر متقدم - Inspire | الدرس 1.2: الرسوم القطبية وأشكالها</span> | Mr. Mohammed Hesham
     </footer>
 
-    <script>
-        const PUBLIC_KEY = "Rb3Lq8tXaFmc5YHUH";
-        const SERVICE_ID = "service_w15m64i";
-        const TEMPLATE_ID = "template_5b0u2tq";
-        const TARGET_EMAIL = "mohammedhesham872@gmail.com";
-        (function(){ emailjs.init(PUBLIC_KEY); })();
-
-        let timeRemaining = 2700;
-        let timerInterval;
-
-        function startTimer() {
-            document.getElementById('timer-container').style.display = 'block';
-            timerInterval = setInterval(() => {
-                timeRemaining--;
-                const minutes = Math.floor(timeRemaining / 60);
-                const seconds = timeRemaining % 60;
-                const timerEl = document.getElementById('timer');
-                timerEl.textContent = `${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
-                if (timeRemaining <= 300) timerEl.classList.add('timer-warning');
-                if (timeRemaining <= 0) {
-                    clearInterval(timerInterval);
-                    alert("انتهى الوقت! سيتم تسليم الامتحان تلقائياً.");
-                    gradeExam();
+<script>
+// ==================== EXAM DATA (BILINGUAL) ====================
+const examData = {
+    sections: [
+        {
+            id: 'sec1',
+            title: { ar: '🔹 الجزء الأول: الدوائر في الإحداثيات القطبية', en: '🔹 Part 1: Circles in Polar Coordinates' },
+            questions: [
+                {
+                    q: { ar: 'المعادلة r = a cos θ تمثل دائرة مركزها بالإحداثيات القطبية:', en: 'The equation r = a cos θ represents a circle with its center at polar coordinates:' },
+                    options: [
+                        { ar: '(a, 0)', en: '(a, 0)' },
+                        { ar: '(a/2, 0)', en: '(a/2, 0)' },
+                        { ar: '(a/2, π/2)', en: '(a/2, π/2)' },
+                        { ar: '(a, π/2)', en: '(a, π/2)' }
+                    ],
+                    correct: 1,
+                    answer: { ar: 'المركز عند (a/2, 0) وقطرها |a|', en: 'Center at (a/2, 0) and diameter |a|' }
+                },
+                {
+                    q: { ar: 'المعادلة r = a sin θ تمثل دائرة تقع:', en: 'The equation r = a sin θ represents a circle located:' },
+                    options: [
+                        { ar: 'محاذية للمحور الأفقي', en: 'Parallel to the horizontal axis' },
+                        { ar: 'محاذية للمحور الرأسي', en: 'Parallel to the vertical axis' },
+                        { ar: 'مركزها نقطة الأصل', en: 'Centered at the origin' },
+                        { ar: 'لا تمر بنقطة الأصل', en: 'Does not pass through the origin' }
+                    ],
+                    correct: 1,
+                    answer: { ar: 'معادلات sin تكون محاذية للمحور الرأسي ومركزها (a/2, π/2)', en: 'sin equations are parallel to vertical axis with center at (a/2, π/2)' }
+                },
+                {
+                    q: { ar: 'قطر الدائرة الممثلة بالمعادلة r = 6 cos θ يساوي:', en: 'The diameter of the circle represented by r = 6 cos θ equals:' },
+                    options: [
+                        { ar: '3', en: '3' },
+                        { ar: '6', en: '6' },
+                        { ar: '12', en: '12' },
+                        { ar: '2', en: '2' }
+                    ],
+                    correct: 1,
+                    answer: { ar: 'القطر = |a| = 6', en: 'Diameter = |a| = 6' }
+                },
+                {
+                    q: { ar: 'جميع الدوائر من الشكل r = a cos θ أو r = a sin θ تشترك في أنها:', en: 'All circles of the form r = a cos θ or r = a sin θ share that they:' },
+                    options: [
+                        { ar: 'لا تمر بالقطب', en: 'Do not pass through the pole' },
+                        { ar: 'تمر بنقطة الأصل (القطب)', en: 'Pass through the origin (pole)' },
+                        { ar: 'مركزها دائماً (0,0)', en: 'Are always centered at (0,0)' },
+                        { ar: 'نصف قطرها ثابت بغض النظر عن a', en: 'Have constant radius regardless of a' }
+                    ],
+                    correct: 1,
+                    answer: { ar: 'عندما θ = π/2 لـ cos أو θ = 0 لـ sin تكون r = 0', en: 'When θ = π/2 for cos or θ = 0 for sin, r = 0' }
                 }
-            }, 1000);
-        }
-
-        function toggleAnswers() {
-            document.querySelectorAll('.answer-box').forEach(el => el.classList.toggle('hidden'));
-        }
-
-        function gradeExam() {
-            let correctCount = 0;
-            const correctAnswers = [
-                'b','b','b','b',  // Q1-4: Circles
-                'c','b','c','b',  // Q5-8: Symmetry
-                'c','b','c','c',  // Q9-12: Famous Curves
-                'b','b','c','b'   // Q13-16: Drawing & SAT Tips
-            ];
-
-            let sec1 = 0, sec2 = 0, sec3 = 0, sec4 = 0;
-
-            for(let i=1; i<=16; i++){
-                const selected = document.querySelector(`input[name="q${i}"]:checked`);
-                const li = document.getElementById(`q-${i}`);
-                const isCorrect = selected && selected.value === correctAnswers[i-1];
-                
-                if (isCorrect) {
-                    correctCount++;
-                    li.classList.add('correct');
-                    li.classList.remove('incorrect');
-                    if (i <= 4) sec1++;
-                    else if (i <= 8) sec2++;
-                    else if (i <= 12) sec3++;
-                    else sec4++;
-                } else {
-                    li.classList.add('incorrect');
-                    li.classList.remove('correct');
+            ]
+        },
+        {
+            id: 'sec2',
+            title: { ar: '🔹 الجزء الثاني: اختبار التماثل', en: '🔹 Part 2: Symmetry Tests' },
+            questions: [
+                {
+                    q: { ar: 'لاختبار التماثل حول المحور القطبي (محور x)، نستبدل:', en: 'To test symmetry about the polar axis (x-axis), we substitute:' },
+                    options: [
+                        { ar: 'θ بـ π - θ', en: 'θ with π - θ' },
+                        { ar: 'r بـ -r', en: 'r with -r' },
+                        { ar: 'θ بـ -θ', en: 'θ with -θ' },
+                        { ar: 'θ بـ θ + π', en: 'θ with θ + π' }
+                    ],
+                    correct: 2,
+                    answer: { ar: 'استبدال θ بـ -θ يختبر التماثل حول المحور القطبي', en: 'Substituting θ with -θ tests symmetry about polar axis' }
+                },
+                {
+                    q: { ar: 'لاختبار التماثل حول الخط θ = π/2 (محور y)، نستبدل:', en: 'To test symmetry about the line θ = π/2 (y-axis), we substitute:' },
+                    options: [
+                        { ar: 'θ بـ -θ', en: 'θ with -θ' },
+                        { ar: 'θ بـ π - θ أو r بـ -r', en: 'θ with π - θ or r with -r' },
+                        { ar: 'r بـ -r فقط', en: 'r with -r only' },
+                        { ar: 'θ بـ θ + π', en: 'θ with θ + π' }
+                    ],
+                    correct: 1,
+                    answer: { ar: 'استبدال θ بـ π-θ أو r بـ -r يختبر التماثل حول المحور الرأسي', en: 'Substituting θ with π-θ or r with -r tests symmetry about vertical axis' }
+                },
+                {
+                    q: { ar: 'لاختبار التماثل حول القطب (نقطة الأصل)، نستبدل:', en: 'To test symmetry about the pole (origin), we substitute:' },
+                    options: [
+                        { ar: 'θ بـ -θ', en: 'θ with -θ' },
+                        { ar: 'θ بـ π - θ', en: 'θ with π - θ' },
+                        { ar: 'r بـ -r أو θ بـ θ + π', en: 'r with -r or θ with θ + π' },
+                        { ar: 'r بـ r²', en: 'r with r²' }
+                    ],
+                    correct: 2,
+                    answer: { ar: 'استبدال r بـ -r أو θ بـ θ+π يختبر التماثل حول القطب', en: 'Substituting r with -r or θ with θ+π tests symmetry about pole' }
+                },
+                {
+                    q: { ar: 'إذا لم تتحقق أي من اختبارات التماثل الثلاثة، فهذا يعني:', en: 'If none of the three symmetry tests are satisfied, this means:' },
+                    options: [
+                        { ar: 'المنحنى ليس له تماثل بالتأكيد', en: 'The curve definitely has no symmetry' },
+                        { ar: 'المنحنى قد يكون متماثلاً لكن الاختبارات غير كافية لإثبات ذلك', en: 'The curve may be symmetric but tests are insufficient to prove it' },
+                        { ar: 'المعادلة خاطئة', en: 'The equation is wrong' },
+                        { ar: 'يجب استخدام الآلة الحاسبة فقط', en: 'Only a calculator should be used' }
+                    ],
+                    correct: 1,
+                    answer: { ar: 'اختبارات التماثل هي شروط كافية وليست ضرورية', en: 'Symmetry tests are sufficient but not necessary conditions' }
                 }
-            }
-
-            const score = (correctCount / 16) * 100;
-            const successRate = Math.round(score);
-            
-            document.getElementById('res-total').textContent = `${Math.round(score)} / 100`;
-            document.getElementById('res-name').textContent = document.getElementById('studentName').value || 'طالب';
-            document.getElementById('res-date').textContent = new Date().toLocaleDateString('ar-AE');
-            
-            document.getElementById('sec1-score').textContent = `${sec1}/4`;
-            document.getElementById('sec2-score').textContent = `${sec2}/4`;
-            document.getElementById('sec3-score').textContent = `${sec3}/4`;
-            document.getElementById('sec4-score').textContent = `${sec4}/4`;
-            
-            const badge = document.getElementById('success-badge');
-            const percent = document.getElementById('success-percent');
-            percent.textContent = `${successRate}%`;
-            
-            if(successRate >= 90) { badge.textContent = 'ممتاز'; badge.className = 'success-badge grade-excellent'; }
-            else if(successRate >= 75) { badge.textContent = 'جيد جداً'; badge.className = 'success-badge grade-good'; }
-            else if(successRate >= 50) { badge.textContent = 'جيد'; badge.className = 'success-badge grade-pass'; }
-            else { badge.textContent = 'يحتاج تحسين'; badge.className = 'success-badge grade-fail'; }
-            
-            document.getElementById('results-panel').classList.remove('hidden');
-            document.getElementById('results-panel').scrollIntoView({ behavior: 'smooth' });
-            document.getElementById('sendEmailBtn').classList.remove('hidden');
+            ]
+        },
+        {
+            id: 'sec3',
+            title: { ar: '🔹 الجزء الثالث: المنحنيات القطبية الشهيرة', en: '🔹 Part 3: Famous Polar Curves' },
+            questions: [
+                {
+                    q: { ar: 'المعادلة r = a ± a cos θ (حيث a = b) تمثل شكلاً يُسمى:', en: 'The equation r = a ± a cos θ (where a = b) represents a shape called:' },
+                    options: [
+                        { ar: 'ليماكون ذو حلقة داخلية', en: 'Limaçon with inner loop' },
+                        { ar: 'ليماكون محدب', en: 'Convex limaçon' },
+                        { ar: 'كارديويد (شكل القلب)', en: 'Cardioid (heart shape)' },
+                        { ar: 'وردة', en: 'Rose' }
+                    ],
+                    correct: 2,
+                    answer: { ar: 'عندما |a| = |b| يكون الشكل قلبياً (Cardioid)', en: 'When |a| = |b|, the shape is a Cardioid' }
+                },
+                {
+                    q: { ar: 'عدد بتلات منحنى الوردة r = a cos(nθ) عندما يكون n زوجياً هو:', en: 'The number of petals of the rose curve r = a cos(nθ) when n is even is:' },
+                    options: [
+                        { ar: 'n', en: 'n' },
+                        { ar: '2n', en: '2n' },
+                        { ar: 'n/2', en: 'n/2' },
+                        { ar: 'n²', en: 'n²' }
+                    ],
+                    correct: 1,
+                    answer: { ar: 'إذا كان n زوجياً فعدد البتلات = 2n', en: 'If n is even, number of petals = 2n' }
+                },
+                {
+                    q: { ar: 'المعادلة r² = a² cos(2θ) تمثل شكلاً يُسمى:', en: 'The equation r² = a² cos(2θ) represents a shape called:' },
+                    options: [
+                        { ar: 'كارديويد', en: 'Cardioid' },
+                        { ar: 'لولب أرخميدس', en: 'Archimedes spiral' },
+                        { ar: 'ليمنسكيت (شكل اللانهاية ∞)', en: 'Lemniscate (infinity ∞ shape)' },
+                        { ar: 'وردة بثلاث بتلات', en: 'Three-petaled rose' }
+                    ],
+                    correct: 2,
+                    answer: { ar: 'وجود r² مع cos(2θ) أو sin(2θ) يعطي شكل الـ 8', en: 'Presence of r² with cos(2θ) or sin(2θ) gives figure-8 shape' }
+                },
+                {
+                    q: { ar: 'منحنى الوردة r = 3 cos(4θ) يحتوي على عدد بتلات يساوي:', en: 'The rose curve r = 3 cos(4θ) contains a number of petals equal to:' },
+                    options: [
+                        { ar: '4', en: '4' },
+                        { ar: '3', en: '3' },
+                        { ar: '8', en: '8' },
+                        { ar: '12', en: '12' }
+                    ],
+                    correct: 2,
+                    answer: { ar: 'n = 4 (زوجي) → عدد البتلات = 2×4 = 8', en: 'n = 4 (even) → number of petals = 2×4 = 8' }
+                }
+            ]
+        },
+        {
+            id: 'sec4',
+            title: { ar: '🔹 الجزء الرابع: خطوات الرسم ونصائح SAT/ACT', en: '🔹 Part 4: Drawing Steps & SAT/ACT Tips' },
+            questions: [
+                {
+                    q: { ar: 'عند رسم منحنى قطبي يدوياً باستخدام جدول قيم، الزوايا التي تكون فيها r = 0 مهمة لأن:', en: 'When drawing a polar curve manually using a table of values, the angles where r = 0 are important because:' },
+                    options: [
+                        { ar: 'المنحنى يتوقف عندها', en: 'The curve stops at them' },
+                        { ar: 'المنحنى يمر بنقطة الأصل (القطب) عندها', en: 'The curve passes through the origin (pole) at them' },
+                        { ar: 'لا يمكن الرسم عندها', en: 'Cannot draw at them' },
+                        { ar: 'تمثل أقصى قيمة للمنحنى', en: 'Represent the maximum value of the curve' }
+                    ],
+                    correct: 1,
+                    answer: { ar: 'r = 0 تعني أن النقطة تقع عند القطب', en: 'r = 0 means the point lies at the pole' }
+                },
+                {
+                    q: { ar: 'لتوفير الوقت عند الرسم اليدوي، يجب:', en: 'To save time during manual drawing, one should:' },
+                    options: [
+                        { ar: 'حساب جميع النقاط من 0 إلى 2π', en: 'Calculate all points from 0 to 2π' },
+                        { ar: 'استخدام اختبار التماثل لرسم نصف المنحنى ثم عكسه', en: 'Use symmetry test to draw half the curve then reflect it' },
+                        { ar: 'الاعتماد على التخمين', en: 'Rely on guessing' },
+                        { ar: 'استخدام الآلة الحاسبة فقط', en: 'Use only a calculator' }
+                    ],
+                    correct: 1,
+                    answer: { ar: 'التماثل يقلل العمل إلى النصف أو الربع', en: 'Symmetry reduces work to half or quarter' }
+                },
+                {
+                    q: { ar: 'في أسئلة SAT/ACT، إذا رأيت r² في المعادلة، فالشكل المتوقع فوراً هو:', en: 'In SAT/ACT questions, if you see r² in the equation, the expected shape immediately is:' },
+                    options: [
+                        { ar: 'دائرة', en: 'Circle' },
+                        { ar: 'كارديويد', en: 'Cardioid' },
+                        { ar: 'ليمنسكيت (شكل الـ 8)', en: 'Lemniscate (figure-8 shape)' },
+                        { ar: 'لولب', en: 'Spiral' }
+                    ],
+                    correct: 2,
+                    answer: { ar: 'r² هو المؤشر المباشر لليمنسكيت', en: 'r² is the direct indicator of a lemniscate' }
+                },
+                {
+                    q: { ar: 'الفرق الرئيسي بين معادلات cos θ و sin θ في الرسوم القطبية هو:', en: 'The main difference between cos θ and sin θ equations in polar graphs is:' },
+                    options: [
+                        { ar: 'لا يوجد فرق', en: 'There is no difference' },
+                        { ar: 'cos محاذية للأفقي و sin محاذية للرأسي', en: 'cos is aligned with horizontal and sin with vertical' },
+                        { ar: 'cos محاذية للرأسي و sin محاذية للأفقي', en: 'cos is aligned with vertical and sin with horizontal' },
+                        { ar: 'يعتمد على قيمة الثابت a فقط', en: 'Depends only on the value of constant a' }
+                    ],
+                    correct: 1,
+                    answer: { ar: 'cos ↔ محور أفقي، sin ↔ محور رأسي', en: 'cos ↔ horizontal axis, sin ↔ vertical axis' }
+                }
+            ]
         }
+    ]
+};
 
-        function sendResultsToEmail() {
-            const btn = document.getElementById('sendEmailBtn');
-            const status = document.getElementById('emailStatus');
-            btn.disabled = true;
-            btn.textContent = '⏳ جاري الإرسال...';
+// ==================== STATE ====================
+let currentLang = 'ar';
+let timeRemaining = 2700;
+let timerInterval;
 
-            const name = document.getElementById('studentName').value || 'N/A';
-            const studentClass = document.getElementById('studentClass').value || 'غير محدد';
-            const date = document.querySelector('input[type="text"]').value || new Date().toLocaleDateString('ar-AE');
-            const score = document.getElementById('res-total').textContent;
-            const successRate = document.getElementById('success-percent').textContent;
-            const sec1 = document.getElementById('sec1-score').textContent;
-            const sec2 = document.getElementById('sec2-score').textContent;
-            const sec3 = document.getElementById('sec3-score').textContent;
-            const sec4 = document.getElementById('sec4-score').textContent;
+// ==================== LANGUAGE SWITCHER ====================
+function setLanguage(lang) {
+    currentLang = lang;
+    document.documentElement.lang = lang;
+    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+    
+    document.getElementById('btn-ar').classList.toggle('active', lang === 'ar');
+    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+    
+    document.body.classList.toggle('en-mode', lang === 'en');
+    
+    document.querySelectorAll('[data-ar][data-en]').forEach(el => {
+        el.textContent = el.getAttribute(`data-${lang}`);
+    });
+    
+    renderExam();
+}
 
-            let answersHTML = `<div dir="rtl" style="font-family: 'Cairo', sans-serif;">
-                <h3 style="color:#0d9488;">📊 تفصيل الأداء - امتحان الرسوم القطبية (8.2):</h3>
-                <p><strong>الطالب:</strong> ${name} | <strong>الشعبة:</strong> ${studentClass}</p>
-                <ul>
-                    <li>الدوائر في الإحداثيات القطبية: ${sec1}</li>
-                    <li>اختبار التماثل: ${sec2}</li>
-                    <li>المنحنيات القطبية الشهيرة: ${sec3}</li>
-                    <li>خطوات الرسم ونصائح SAT: ${sec4}</li>
-                </ul>
-                <table style="border:1px solid #e5e7eb; border-collapse:collapse; width:100%; font-size:14px; direction: rtl;">
-                <tr style="background:#0d9488; color:white;"><th style="border:1px solid #e5e7eb; padding:8px;">السؤال</th><th style="border:1px solid #e5e7eb; padding:8px;">الإجابة المختارة</th><th style="border:1px solid #e5e7eb; padding:8px;">الحالة</th></tr>`;
+// ==================== RENDER EXAM ====================
+function renderExam() {
+    const container = document.getElementById('exam-content');
+    const labels = {
+        ar: { option: ['أ', 'ب', 'ج', 'د'], answer: '✅ الإجابة:' },
+        en: { option: ['A', 'B', 'C', 'D'], answer: '✅ Answer:' }
+    };
+    const lbl = labels[currentLang];
+    const isRTL = currentLang === 'ar';
+    
+    let html = '';
+    examData.sections.forEach((section, sIdx) => {
+        html += `
+        <section class="bg-white p-6 rounded-xl shadow-lg">
+            <h2 class="text-xl font-bold mb-4 text-teal-700">${section.title[currentLang]}</h2>
+            <ol id="section-${sIdx}-list" class="space-y-4 text-sm">`;
             
-            const correctAnswers = ['b','b','b','b','c','b','c','b','c','b','c','c','b','b','c','b'];
+        section.questions.forEach((q, qIdx) => {
+            const globalIdx = sIdx * 4 + qIdx;
+            const borderSide = isRTL ? 'border-r-4 pr-4' : 'border-l-4 pl-4';
+            html += `
+                <li class="${borderSide} border-teal-500 py-2" id="q-${globalIdx}">
+                    <strong>${globalIdx + 1}.</strong> ${q.q[currentLang]}<br>`;
+                    
+            q.options.forEach((opt, oIdx) => {
+                const radioSide = isRTL ? 'mr-4 ml-2' : 'ml-4 mr-2';
+                html += `
+                    <label class="cursor-pointer block mt-1 ${isRTL ? 'mr-4' : 'ml-4'}">
+                        <input type="radio" name="q${globalIdx}" value="${String.fromCharCode(97 + oIdx)}" class="${radioSide}"> 
+                        ${lbl.option[oIdx]}) ${opt[currentLang]}
+                    </label>`;
+            });
             
-            for(let i=1; i<=16; i++) {
-                const sel = document.querySelector(`input[name="q${i}"]:checked`);
-                const isCorrect = sel && sel.value === correctAnswers[i-1];
-                answersHTML += `<tr><td style="border:1px solid #e5e7eb; padding:6px;">${i}</td><td style="border:1px solid #e5e7eb; padding:6px;">${sel ? sel.value : '-'}</td><td style="border:1px solid #e5e7eb; padding:6px; color:${isCorrect ? 'green' : 'red'}">${isCorrect ? '✅ صحيح' : '❌ خطأ'}</td></tr>`;
-            }
-            answersHTML += '</table></div>';
+            html += `
+                    <div class="answer-box text-green-700 mt-2 font-medium hidden">
+                        ${lbl.answer} ${lbl.option[q.correct]}) ${q.options[q.correct][currentLang]} — ${q.answer[currentLang]}
+                    </div>
+                </li>`;
+        });
+        
+        html += `
+            </ol>
+        </section>`;
+    });
+    
+    container.innerHTML = html;
+}
 
-            const templateParams = {
-                to_email: TARGET_EMAIL,
-                student_name: name,
-                exam_date: date,
-                total_score: score,
-                success_rate: successRate,
-                answers_table: answersHTML
-            };
-
-            emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams)
-                .then(() => {
-                    status.textContent = '✅ تم الإرسال بنجاح! تحقق من Gmail.';
-                    status.style.color = '#059669';
-                    btn.textContent = '✓ تم الإرسال';
-                })
-                .catch(err => {
-                    status.textContent = '❌ فشل الإرسال. تحقق من الإعدادات.';
-                    status.style.color = '#dc2626';
-                    btn.disabled = false;
-                    btn.textContent = '📧 إعادة المحاولة';
-                    console.error('EmailJS Error:', err);
-                });
+// ==================== TIMER ====================
+function startTimer() {
+    document.getElementById('timer-container').style.display = 'block';
+    timerInterval = setInterval(() => {
+        timeRemaining--;
+        const minutes = Math.floor(timeRemaining / 60);
+        const seconds = timeRemaining % 60;
+        const timerEl = document.getElementById('timer');
+        timerEl.textContent = `${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
+        if (timeRemaining <= 300) timerEl.classList.add('timer-warning');
+        if (timeRemaining <= 0) {
+            clearInterval(timerInterval);
+            alert(currentLang === 'ar' ? "انتهى الوقت! سيتم تسليم الامتحان تلقائياً." : "Time's up! Exam will be submitted automatically.");
+            gradeExam();
         }
+    }, 1000);
+}
 
-        window.addEventListener('DOMContentLoaded', startTimer);
-    </script>
+function toggleAnswers() {
+    document.querySelectorAll('.answer-box').forEach(el => el.classList.toggle('hidden'));
+}
+
+// ==================== GRADING ====================
+function gradeExam() {
+    let correctCount = 0;
+    const correctAnswersLetters = [
+        'b','b','b','b',  // Q1-4: Circles
+        'c','b','c','b',  // Q5-8: Symmetry
+        'c','b','c','c',  // Q9-12: Famous Curves
+        'b','b','c','b'   // Q13-16: Drawing & SAT Tips
+    ];
+    
+    let sec1 = 0, sec2 = 0, sec3 = 0, sec4 = 0;
+    
+    for (let i = 1; i <= 16; i++) {
+        const selected = document.querySelector(`input[name="q${i}"]:checked`);
+        const li = document.getElementById(`q-${i}`);
+        const isCorrect = selected && selected.value === correctAnswersLetters[i-1];
+        
+        if (isCorrect) {
+            correctCount++;
+            li.classList.add('correct');
+            li.classList.remove('incorrect');
+            if (i <= 4) sec1++;
+            else if (i <= 8) sec2++;
+            else if (i <= 12) sec3++;
+            else sec4++;
+        } else {
+            li.classList.add('incorrect');
+            li.classList.remove('correct');
+        }
+    }
+
+    const score = (correctCount / 16) * 100;
+    const successRate = Math.round(score);
+    
+    document.getElementById('res-total').textContent = `${Math.round(score)} / 100`;
+    document.getElementById('res-name').textContent = document.getElementById('studentName').value || (currentLang === 'ar' ? 'طالب' : 'Student');
+    document.getElementById('res-date').textContent = new Date().toLocaleDateString(currentLang === 'ar' ? 'ar-AE' : 'en-US');
+    
+    document.getElementById('sec1-score').textContent = `${sec1}/4`;
+    document.getElementById('sec2-score').textContent = `${sec2}/4`;
+    document.getElementById('sec3-score').textContent = `${sec3}/4`;
+    document.getElementById('sec4-score').textContent = `${sec4}/4`;
+    
+    const badge = document.getElementById('success-badge');
+    const percent = document.getElementById('success-percent');
+    percent.textContent = `${successRate}%`;
+    
+    if (currentLang === 'ar') {
+        if (successRate >= 90) { badge.textContent = 'ممتاز'; badge.className = 'success-badge grade-excellent'; }
+        else if (successRate >= 75) { badge.textContent = 'جيد جداً'; badge.className = 'success-badge grade-good'; }
+        else if (successRate >= 50) { badge.textContent = 'جيد'; badge.className = 'success-badge grade-pass'; }
+        else { badge.textContent = 'يحتاج تحسين'; badge.className = 'success-badge grade-fail'; }
+    } else {
+        if (successRate >= 90) { badge.textContent = 'Excellent'; badge.className = 'success-badge grade-excellent'; }
+        else if (successRate >= 75) { badge.textContent = 'Very Good'; badge.className = 'success-badge grade-good'; }
+        else if (successRate >= 50) { badge.textContent = 'Good'; badge.className = 'success-badge grade-pass'; }
+        else { badge.textContent = 'Needs Improvement'; badge.className = 'success-badge grade-fail'; }
+    }
+    
+    document.getElementById('results-panel').classList.remove('hidden');
+    document.getElementById('results-panel').scrollIntoView({ behavior: 'smooth' });
+    document.getElementById('sendEmailBtn').classList.remove('hidden');
+}
+
+// ==================== EMAIL ====================
+function sendResultsToEmail() {
+    const btn = document.getElementById('sendEmailBtn');
+    const status = document.getElementById('emailStatus');
+    btn.disabled = true;
+    btn.textContent = currentLang === 'ar' ? '⏳ جاري الإرسال...' : '⏳ Sending...';
+
+    const name = document.getElementById('studentName').value || 'N/A';
+    const studentClass = document.getElementById('studentClass').value || (currentLang === 'ar' ? 'غير محدد' : 'N/A');
+    const date = document.querySelector('input[type="text"]').value || new Date().toLocaleDateString(currentLang === 'ar' ? 'ar-AE' : 'en-US');
+    const score = document.getElementById('res-total').textContent;
+    const successRate = document.getElementById('success-percent').textContent;
+    const sec1 = document.getElementById('sec1-score').textContent;
+    const sec2 = document.getElementById('sec2-score').textContent;
+    const sec3 = document.getElementById('sec3-score').textContent;
+    const sec4 = document.getElementById('sec4-score').textContent;
+
+    const dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+    const font = currentLang === 'ar' ? 'Cairo' : 'Inter';
+    
+    const sectionNames = {
+        ar: ['الدوائر في الإحداثيات القطبية', 'اختبار التماثل', 'المنحنيات القطبية الشهيرة', 'خطوات الرسم ونصائح SAT'],
+        en: ['Circles in Polar Coordinates', 'Symmetry Tests', 'Famous Polar Curves', 'Drawing Steps & SAT Tips']
+    };
+    const sn = sectionNames[currentLang];
+
+    let answersHTML = `<div dir="${dir}" style="font-family: '${font}', sans-serif;">
+        <h3 style="color:#0d9488;">📊 ${currentLang === 'ar' ? 'تفصيل الأداء - امتحان الرسوم القطبية (1.2)' : 'Performance Details - Polar Graphs Exam (1.2)'}:</h3>
+        <p><strong>${currentLang === 'ar' ? 'الطالب' : 'Student'}:</strong> ${name} | <strong>${currentLang === 'ar' ? 'الشعبة' : 'Class'}:</strong> ${studentClass}</p>
+        <ul>
+            <li>${sn[0]}: ${sec1}</li>
+            <li>${sn[1]}: ${sec2}</li>
+            <li>${sn[2]}: ${sec3}</li>
+            <li>${sn[3]}: ${sec4}</li>
+        </ul>
+        <table style="border:1px solid #e5e7eb; border-collapse:collapse; width:100%; font-size:14px; direction: ${dir};">
+        <tr style="background:#0d9488; color:white;"><th style="border:1px solid #e5e7eb; padding:8px;">${currentLang === 'ar' ? 'السؤال' : 'Q#'}</th><th style="border:1px solid #e5e7eb; padding:8px;">${currentLang === 'ar' ? 'الإجابة المختارة' : 'Selected'}</th><th style="border:1px solid #e5e7eb; padding:8px;">${currentLang === 'ar' ? 'الحالة' : 'Status'}</th></tr>`;
+    
+    const correctAnswersLetters = ['b','b','b','b','c','b','c','b','c','b','c','c','b','b','c','b'];
+    
+    for (let i = 1; i <= 16; i++) {
+        const sel = document.querySelector(`input[name="q${i}"]:checked`);
+        const isCorrect = sel && sel.value === correctAnswersLetters[i-1];
+        answersHTML += `<tr><td style="border:1px solid #e5e7eb; padding:6px;">${i}</td><td style="border:1px solid #e5e7eb; padding:6px;">${sel ? sel.value.toUpperCase() : '-'}</td><td style="border:1px solid #e5e7eb; padding:6px; color:${isCorrect ? 'green' : 'red'}">${isCorrect ? '✅ ' + (currentLang === 'ar' ? 'صحيح' : 'Correct') : '❌ ' + (currentLang === 'ar' ? 'خطأ' : 'Wrong')}</td></tr>`;
+    }
+    answersHTML += '</table></div>';
+
+    const PUBLIC_KEY = "Rb3Lq8tXaFmc5YHUH";
+    const SERVICE_ID = "service_w15m64i";
+    const TEMPLATE_ID = "template_5b0u2tq";
+    const TARGET_EMAIL = "mohammedhesham872@gmail.com";
+
+    emailjs.init(PUBLIC_KEY);
+    const templateParams = {
+        to_email: TARGET_EMAIL,
+        student_name: name,
+        exam_date: date,
+        total_score: score,
+        success_rate: successRate,
+        answers_table: answersHTML
+    };
+
+    emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams)
+        .then(() => {
+            status.textContent = currentLang === 'ar' ? '✅ تم الإرسال بنجاح! تحقق من Gmail.' : '✅ Sent successfully! Check Gmail.';
+            status.style.color = '#059669';
+            btn.textContent = currentLang === 'ar' ? '✓ تم الإرسال' : '✓ Sent';
+        })
+        .catch(err => {
+            status.textContent = currentLang === 'ar' ? '❌ فشل الإرسال. تحقق من الإعدادات.' : '❌ Failed to send. Check settings.';
+            status.style.color = '#dc2626';
+            btn.disabled = false;
+            btn.textContent = currentLang === 'ar' ? '📧 إعادة المحاولة' : '📧 Retry';
+            console.error('EmailJS Error:', err);
+        });
+}
+
+// Initialize
+window.addEventListener('DOMContentLoaded', () => {
+    renderExam();
+    startTimer();
+});
+</script>
 </body>
 </html>
