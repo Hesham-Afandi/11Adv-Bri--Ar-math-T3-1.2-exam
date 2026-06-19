@@ -22,7 +22,6 @@
         .grade-pass { background: #dbeafe; color: #1e40af; }
         .grade-fail { background: #fee2e2; color: #991b1b; }
         
-        /* Language Switcher */
         .lang-switch {
             position: fixed; top: 16px; left: 16px; z-index: 100;
             background: white; padding: 6px; border-radius: 30px;
@@ -41,13 +40,11 @@
 </head>
 <body class="bg-gray-50 text-gray-800 p-4 md:p-8 min-h-screen">
 
-    <!-- Language Switcher -->
     <div class="lang-switch no-print">
         <button class="lang-btn active" onclick="setLanguage('ar')" id="btn-ar">عربي</button>
         <button class="lang-btn" onclick="setLanguage('en')" id="btn-en">EN</button>
     </div>
 
-    <!-- Timer -->
     <div id="timer-container" class="max-w-4xl mx-auto mb-4 text-center no-print">
         <div class="bg-white p-4 rounded-xl shadow-md inline-block border-2 border-teal-100">
             <span class="text-gray-600 ml-2" data-ar="⏱️ الوقت المتبقي:" data-en="⏱️ Time Remaining:">⏱️ الوقت المتبقي:</span>
@@ -55,13 +52,11 @@
         </div>
     </div>
 
-    <!-- Controls -->
     <div class="max-w-4xl mx-auto mb-6 flex flex-wrap gap-3 justify-center no-print">
         <button onclick="toggleAnswers()" class="bg-teal-600 hover:bg-teal-700 text-white px-5 py-2 rounded-lg font-medium transition shadow cursor-pointer" data-ar="👁️ إظهار / إخفاء الإجابات" data-en="👁️ Show / Hide Answers">👁️ إظهار / إخفاء الإجابات</button>
         <button onclick="window.print()" class="bg-gray-800 hover:bg-gray-900 text-white px-5 py-2 rounded-lg font-medium transition shadow cursor-pointer" data-ar="🖨️ طباعة / PDF" data-en="🖨️ Print / PDF">🖨️ طباعة / PDF</button>
     </div>
 
-    <!-- Header -->
     <header class="max-w-4xl mx-auto bg-white p-6 rounded-xl shadow-md mb-8 border-r-4 border-teal-600">
         <div class="text-center">
             <h1 class="text-2xl md:text-3xl font-bold text-gray-900 mb-2" data-ar="📐 رياضيات الصف الحادي عشر متقدم - Inspire" data-en="📐 Grade 11 Advanced Mathematics - Inspire">📐 رياضيات الصف الحادي عشر متقدم - Inspire</h1>
@@ -77,16 +72,12 @@
         </div>
     </header>
 
-    <main class="max-w-4xl mx-auto space-y-8" id="exam-content">
-        <!-- Questions rendered by JS -->
-    </main>
+    <main class="max-w-4xl mx-auto space-y-8" id="exam-content"></main>
 
-    <!-- Submit Button -->
     <div class="text-center no-print pb-8 mt-8">
         <button onclick="gradeExam()" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white text-lg px-10 py-4 rounded-xl font-bold shadow-xl transition transform hover:scale-105 cursor-pointer" data-ar="📝 تسليم وتصحيح الامتحان" data-en="📝 Submit & Grade Exam">📝 تسليم وتصحيح الامتحان</button>
     </div>
 
-    <!-- Results Panel -->
     <div id="results-panel" class="max-w-4xl mx-auto mt-8 bg-white p-8 rounded-2xl shadow-2xl border-t-4 border-emerald-500 hidden no-print">
         <h2 class="text-3xl font-bold text-gray-900 mb-6 text-center" data-ar="📊 نتائج الامتحان" data-en="📊 Exam Results">📊 نتائج الامتحان</h2>
         <div class="grid md:grid-cols-3 gap-4 mb-6">
@@ -117,8 +108,12 @@
                     <span id="sec3-score" class="font-bold text-teal-600">0/4</span>
                 </div>
                 <div class="flex justify-between items-center">
-                    <span class="text-gray-700" data-ar="خطوات الرسم ونصائح SAT" data-en="Drawing Steps & SAT Tips">خطوات الرسم ونصائح SAT</span>
+                    <span class="text-gray-700" data-ar="خطوات الرسم" data-en="Drawing Steps">خطوات الرسم</span>
                     <span id="sec4-score" class="font-bold text-teal-600">0/4</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-gray-700" data-ar="نصائح SAT/ACT" data-en="SAT/ACT Tips">نصائح SAT/ACT</span>
+                    <span id="sec5-score" class="font-bold text-teal-600">0/4</span>
                 </div>
             </div>
         </div>
@@ -138,7 +133,6 @@
     </footer>
 
 <script>
-// ==================== EXAM DATA (BILINGUAL) ====================
 const examData = {
     sections: [
         {
@@ -293,7 +287,7 @@ const examData = {
         },
         {
             id: 'sec4',
-            title: { ar: '🔹 الجزء الرابع: خطوات الرسم ونصائح SAT/ACT', en: '🔹 Part 4: Drawing Steps & SAT/ACT Tips' },
+            title: { ar: '🔹 الجزء الرابع: خطوات الرسم', en: '🔹 Part 4: Drawing Steps' },
             questions: [
                 {
                     q: { ar: 'عند رسم منحنى قطبي يدوياً باستخدام جدول قيم، الزوايا التي تكون فيها r = 0 مهمة لأن:', en: 'When drawing a polar curve manually using a table of values, the angles where r = 0 are important because:' },
@@ -318,6 +312,34 @@ const examData = {
                     answer: { ar: 'التماثل يقلل العمل إلى النصف أو الربع', en: 'Symmetry reduces work to half or quarter' }
                 },
                 {
+                    q: { ar: 'الفرق الرئيسي بين معادلات cos θ و sin θ في الرسوم القطبية هو:', en: 'The main difference between cos θ and sin θ equations in polar graphs is:' },
+                    options: [
+                        { ar: 'لا يوجد فرق', en: 'There is no difference' },
+                        { ar: 'cos محاذية للأفقي و sin محاذية للرأسي', en: 'cos is aligned with horizontal and sin with vertical' },
+                        { ar: 'cos محاذية للرأسي و sin محاذية للأفقي', en: 'cos is aligned with vertical and sin with horizontal' },
+                        { ar: 'يعتمد على قيمة الثابت a فقط', en: 'Depends only on the value of constant a' }
+                    ],
+                    correct: 1,
+                    answer: { ar: 'cos ↔ محور أفقي، sin ↔ محور رأسي', en: 'cos ↔ horizontal axis, sin ↔ vertical axis' }
+                },
+                {
+                    q: { ar: 'عند رسم منحنى r = 2 + 2cos θ، الشكل الناتج هو:', en: 'When drawing the curve r = 2 + 2cos θ, the resulting shape is:' },
+                    options: [
+                        { ar: 'دائرة', en: 'Circle' },
+                        { ar: 'كارديويد (قلب)', en: 'Cardioid (heart)' },
+                        { ar: 'ليماكون بحلقة داخلية', en: 'Limaçon with inner loop' },
+                        { ar: 'ليماكون محدب', en: 'Convex limaçon' }
+                    ],
+                    correct: 1,
+                    answer: { ar: 'عندما a = b يكون الشكل كارديويد', en: 'When a = b, the shape is a cardioid' }
+                }
+            ]
+        },
+        {
+            id: 'sec5',
+            title: { ar: '🔹 الجزء الخامس: نصائح SAT/ACT', en: '🔹 Part 5: SAT/ACT Tips' },
+            questions: [
+                {
                     q: { ar: 'في أسئلة SAT/ACT، إذا رأيت r² في المعادلة، فالشكل المتوقع فوراً هو:', en: 'In SAT/ACT questions, if you see r² in the equation, the expected shape immediately is:' },
                     options: [
                         { ar: 'دائرة', en: 'Circle' },
@@ -329,27 +351,47 @@ const examData = {
                     answer: { ar: 'r² هو المؤشر المباشر لليمنسكيت', en: 'r² is the direct indicator of a lemniscate' }
                 },
                 {
-                    q: { ar: 'الفرق الرئيسي بين معادلات cos θ و sin θ في الرسوم القطبية هو:', en: 'The main difference between cos θ and sin θ equations in polar graphs is:' },
+                    q: { ar: 'في اختبار SAT، المعادلة r = 3sin(3θ) تمثل:', en: 'In SAT test, the equation r = 3sin(3θ) represents:' },
                     options: [
-                        { ar: 'لا يوجد فرق', en: 'There is no difference' },
-                        { ar: 'cos محاذية للأفقي و sin محاذية للرأسي', en: 'cos is aligned with horizontal and sin with vertical' },
-                        { ar: 'cos محاذية للرأسي و sin محاذية للأفقي', en: 'cos is aligned with vertical and sin with horizontal' },
-                        { ar: 'يعتمد على قيمة الثابت a فقط', en: 'Depends only on the value of constant a' }
+                        { ar: 'وردة بـ 3 بتلات', en: 'Rose with 3 petals' },
+                        { ar: 'وردة بـ 6 بتلات', en: 'Rose with 6 petals' },
+                        { ar: 'كارديويد', en: 'Cardioid' },
+                        { ar: 'ليماكون', en: 'Limaçon' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'n = 3 (فردي) → عدد البتلات = 3', en: 'n = 3 (odd) → number of petals = 3' }
+                },
+                {
+                    q: { ar: 'في أسئلة ACT، المعادلة r = 4 + 2cos θ تمثل:', en: 'In ACT questions, the equation r = 4 + 2cos θ represents:' },
+                    options: [
+                        { ar: 'كارديويد', en: 'Cardioid' },
+                        { ar: 'ليماكون بحلقة داخلية', en: 'Limaçon with inner loop' },
+                        { ar: 'ليماكون محدب (بدون حلقة)', en: 'Convex limaçon (no loop)' },
+                        { ar: 'دائرة', en: 'Circle' }
+                    ],
+                    correct: 2,
+                    answer: { ar: 'عندما a > b يكون ليماكون محدب بدون حلقة', en: 'When a > b, it is a convex limaçon without loop' }
+                },
+                {
+                    q: { ar: 'في اختبار SAT/ACT، أسرع طريقة لتحديد شكل المنحنى r = a + b cos θ هي:', en: 'In SAT/ACT test, the fastest way to identify the shape of r = a + b cos θ is:' },
+                    options: [
+                        { ar: 'رسم جدول قيم كامل', en: 'Draw a complete table of values' },
+                        { ar: 'مقارنة |a| مع |b|', en: 'Compare |a| with |b|' },
+                        { ar: 'استخدام الآلة الحاسبة البيانية', en: 'Use a graphing calculator' },
+                        { ar: 'حساب المشتقة', en: 'Calculate the derivative' }
                     ],
                     correct: 1,
-                    answer: { ar: 'cos ↔ محور أفقي، sin ↔ محور رأسي', en: 'cos ↔ horizontal axis, sin ↔ vertical axis' }
+                    answer: { ar: 'مقارنة |a| مع |b| تحدد نوع الليماكون فوراً', en: 'Comparing |a| with |b| immediately determines the limaçon type' }
                 }
             ]
         }
     ]
 };
 
-// ==================== STATE ====================
 let currentLang = 'ar';
 let timeRemaining = 2700;
 let timerInterval;
 
-// ==================== LANGUAGE SWITCHER ====================
 function setLanguage(lang) {
     currentLang = lang;
     document.documentElement.lang = lang;
@@ -367,7 +409,6 @@ function setLanguage(lang) {
     renderExam();
 }
 
-// ==================== RENDER EXAM ====================
 function renderExam() {
     const container = document.getElementById('exam-content');
     const labels = {
@@ -415,7 +456,6 @@ function renderExam() {
     container.innerHTML = html;
 }
 
-// ==================== TIMER ====================
 function startTimer() {
     document.getElementById('timer-container').style.display = 'block';
     timerInterval = setInterval(() => {
@@ -437,19 +477,19 @@ function toggleAnswers() {
     document.querySelectorAll('.answer-box').forEach(el => el.classList.toggle('hidden'));
 }
 
-// ==================== GRADING ====================
 function gradeExam() {
     let correctCount = 0;
     const correctAnswersLetters = [
         'b','b','b','b',  // Q1-4: Circles
         'c','b','c','b',  // Q5-8: Symmetry
         'c','b','c','c',  // Q9-12: Famous Curves
-        'b','b','c','b'   // Q13-16: Drawing & SAT Tips
+        'b','b','b','b',  // Q13-16: Drawing Steps
+        'c','a','c','b'   // Q17-20: SAT/ACT Tips
     ];
     
-    let sec1 = 0, sec2 = 0, sec3 = 0, sec4 = 0;
+    let sec1 = 0, sec2 = 0, sec3 = 0, sec4 = 0, sec5 = 0;
     
-    for (let i = 1; i <= 16; i++) {
+    for (let i = 1; i <= 20; i++) {
         const selected = document.querySelector(`input[name="q${i}"]:checked`);
         const li = document.getElementById(`q-${i}`);
         const isCorrect = selected && selected.value === correctAnswersLetters[i-1];
@@ -461,14 +501,15 @@ function gradeExam() {
             if (i <= 4) sec1++;
             else if (i <= 8) sec2++;
             else if (i <= 12) sec3++;
-            else sec4++;
+            else if (i <= 16) sec4++;
+            else sec5++;
         } else {
             li.classList.add('incorrect');
             li.classList.remove('correct');
         }
     }
 
-    const score = (correctCount / 16) * 100;
+    const score = (correctCount / 20) * 100;
     const successRate = Math.round(score);
     
     document.getElementById('res-total').textContent = `${Math.round(score)} / 100`;
@@ -479,6 +520,7 @@ function gradeExam() {
     document.getElementById('sec2-score').textContent = `${sec2}/4`;
     document.getElementById('sec3-score').textContent = `${sec3}/4`;
     document.getElementById('sec4-score').textContent = `${sec4}/4`;
+    document.getElementById('sec5-score').textContent = `${sec5}/4`;
     
     const badge = document.getElementById('success-badge');
     const percent = document.getElementById('success-percent');
@@ -501,7 +543,6 @@ function gradeExam() {
     document.getElementById('sendEmailBtn').classList.remove('hidden');
 }
 
-// ==================== EMAIL ====================
 function sendResultsToEmail() {
     const btn = document.getElementById('sendEmailBtn');
     const status = document.getElementById('emailStatus');
@@ -517,13 +558,14 @@ function sendResultsToEmail() {
     const sec2 = document.getElementById('sec2-score').textContent;
     const sec3 = document.getElementById('sec3-score').textContent;
     const sec4 = document.getElementById('sec4-score').textContent;
+    const sec5 = document.getElementById('sec5-score').textContent;
 
     const dir = currentLang === 'ar' ? 'rtl' : 'ltr';
     const font = currentLang === 'ar' ? 'Cairo' : 'Inter';
     
     const sectionNames = {
-        ar: ['الدوائر في الإحداثيات القطبية', 'اختبار التماثل', 'المنحنيات القطبية الشهيرة', 'خطوات الرسم ونصائح SAT'],
-        en: ['Circles in Polar Coordinates', 'Symmetry Tests', 'Famous Polar Curves', 'Drawing Steps & SAT Tips']
+        ar: ['الدوائر في الإحداثيات القطبية', 'اختبار التماثل', 'المنحنيات القطبية الشهيرة', 'خطوات الرسم', 'نصائح SAT/ACT'],
+        en: ['Circles in Polar Coordinates', 'Symmetry Tests', 'Famous Polar Curves', 'Drawing Steps', 'SAT/ACT Tips']
     };
     const sn = sectionNames[currentLang];
 
@@ -535,13 +577,14 @@ function sendResultsToEmail() {
             <li>${sn[1]}: ${sec2}</li>
             <li>${sn[2]}: ${sec3}</li>
             <li>${sn[3]}: ${sec4}</li>
+            <li>${sn[4]}: ${sec5}</li>
         </ul>
         <table style="border:1px solid #e5e7eb; border-collapse:collapse; width:100%; font-size:14px; direction: ${dir};">
         <tr style="background:#0d9488; color:white;"><th style="border:1px solid #e5e7eb; padding:8px;">${currentLang === 'ar' ? 'السؤال' : 'Q#'}</th><th style="border:1px solid #e5e7eb; padding:8px;">${currentLang === 'ar' ? 'الإجابة المختارة' : 'Selected'}</th><th style="border:1px solid #e5e7eb; padding:8px;">${currentLang === 'ar' ? 'الحالة' : 'Status'}</th></tr>`;
     
-    const correctAnswersLetters = ['b','b','b','b','c','b','c','b','c','b','c','c','b','b','c','b'];
+    const correctAnswersLetters = ['b','b','b','b','c','b','c','b','c','b','c','c','b','b','b','b','c','a','c','b'];
     
-    for (let i = 1; i <= 16; i++) {
+    for (let i = 1; i <= 20; i++) {
         const sel = document.querySelector(`input[name="q${i}"]:checked`);
         const isCorrect = sel && sel.value === correctAnswersLetters[i-1];
         answersHTML += `<tr><td style="border:1px solid #e5e7eb; padding:6px;">${i}</td><td style="border:1px solid #e5e7eb; padding:6px;">${sel ? sel.value.toUpperCase() : '-'}</td><td style="border:1px solid #e5e7eb; padding:6px; color:${isCorrect ? 'green' : 'red'}">${isCorrect ? '✅ ' + (currentLang === 'ar' ? 'صحيح' : 'Correct') : '❌ ' + (currentLang === 'ar' ? 'خطأ' : 'Wrong')}</td></tr>`;
@@ -578,7 +621,6 @@ function sendResultsToEmail() {
         });
 }
 
-// Initialize
 window.addEventListener('DOMContentLoaded', () => {
     renderExam();
     startTimer();
